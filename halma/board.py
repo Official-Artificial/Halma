@@ -24,6 +24,28 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
+    def nextMoves(self, player=1):
+        moves = []
+        for y in range(self.boardLW):
+            for x in range(self.boardLW):
+                if self.board[x][y][1] != player:
+                    continue
+                moves += self.availMoves(x, y, [], [])
+        return moves
+
+    def availMoves(self, x, y, moves, skip_tiles):
+        for tempY in range(-1, 2):
+            for tempX in range(-1, 2):
+                newX = x + tempX
+                newY = y + tempY
+                if ((newX == x and newY == y) or newX < 0 or newY < 0 or newX >= self.boardLW or newY >= self.boardLW):
+                    continue
+                if self.board[newX][newY][1] == 0:
+                    moves += [((x, y), (newX, newY))]
+                skip_tiles += [(x, y)]
+        return moves
+
+
     def get_piece(self, row, col):
         return self.board[row][col]
 
