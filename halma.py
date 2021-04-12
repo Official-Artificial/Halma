@@ -94,7 +94,7 @@ from halma.game import Game
 
 import pygame
 import random
-from halma.constants import WIDTH, HEIGHT, SQUARE_SIZE
+from halma.constants import WIDTH, HEIGHT, SQUARE_SIZE, WHITE, RED, GREEN
 from halma.board import Board
 
 FPS = 60
@@ -166,7 +166,7 @@ def main():
         pygame.display.update()
         # if True then while loop is broken and the game ends
         # if board.checkWin(curreGreen=10, winAmount=10):
-        #   break
+            # break
 
     pygame.quit()
 
