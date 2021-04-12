@@ -1,5 +1,6 @@
 import pygame
-from.constants import BLACK, ROWS, WHITE, SQUARE_SIZE, COLS, RED, BROWN, GREEN, N_PIECES_PER_PLAYER
+import easygui
+from.constants import BLACK, ROWS, WHITE, SQUARE_SIZE, COLS, RED, BROWN, GREEN, N_PIECES_PER_PLAYER, BLUE
 from.piece import Piece
 
 class Board:
@@ -9,6 +10,8 @@ class Board:
         self.red_left = self.green_left = 10
         self.red_pieces_place = 0
         self.green_pieces_place = 0
+        self.redCamp = []
+        self.greenCamp = []
         self.create_board()
 
     # drawing the board
@@ -26,9 +29,9 @@ class Board:
 
     def nextMoves(self, player=1):
         moves = []
-        for y in range(self.boardLW):
-            for x in range(self.boardLW):
-                if self.board[x][y][1] != player:
+        for y in range(SQUARE_SIZE):#self.boardLW):
+            for x in range(SQUARE_SIZE):#self.boardLW):
+                if self.board[x][y] [1]!= player:
                     continue
                 moves += self.availMoves(x, y, [], [])
         return moves
@@ -38,10 +41,10 @@ class Board:
             for tempX in range(-1, 2):
                 newX = x + tempX
                 newY = y + tempY
-                if ((newX == x and newY == y) or newX < 0 or newY < 0 or newX >= self.boardLW or newY >= self.boardLW):
+                if ((newX == x and newY == y) or newX < 0 or newY < 0 or newX >= SQUARE_SIZE or newY >= SQUARE_SIZE):
                     continue
-                if self.board[newX][newY][1] == 0:
-                    moves += [((x, y), (newX, newY))]
+                if (newX, newY) != (x,y):
+                    moves += [(newX, newY)]
                 skip_tiles += [(x, y)]
         return moves
 
@@ -58,7 +61,7 @@ class Board:
             N_Diagonals += 1
         return N_Diagonals -1
 
-    # # placing the pieces on the board
+    # placing the pieces on the board
     def create_board(self):
         total_diagonals = ROWS + COLS - 1
         diagonals_per_player = self.get_n_diagonals_per_player()
@@ -70,7 +73,7 @@ class Board:
                         self.red_pieces_place += 1
 
                     elif row + col >= total_diagonals - diagonals_per_player:
-                        self.board[row].append( Piece( row, col, GREEN ) )
+                        self.board[row].append( Piece( row, col, GREEN) )
                         self.green_pieces_place += 1
                 #     self.board[row].append(Piece(row, col, GREEN))
                     else:
@@ -113,7 +116,18 @@ class Board:
                 piece = self.board[row][col]
                 if piece != 0:
                     piece.draw(win)
-#
+
+    # checking to see who has won the game
+    def checkWin(currRed, curreGreen, winAmount):
+        if currRed == winAmount:
+            easygui.msgbox( 'Green Wins!', 'msgTitle' )
+            return True
+        elif curreGreen == winAmount:
+            easygui.msgbox( 'Red Wins!', 'msgTitle' )
+            return True
+        else:
+             return False
+# #
 # class Board:
 #     def __init__(self):
 #         self.board = []
@@ -154,7 +168,7 @@ class Board:
 #         if row < 0 or row >= 8 or col < 0 or col >= 8:
 #             easygui.msgbox( 'Invalid Move!', 'Invalid Move!' )
 #
-#         possibleMoves = nextMoves(
+#         # possibleMoves = nextMoves(
 #             # swap postions
 #             self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][
 #             piece.col]
@@ -274,7 +288,7 @@ class Board:
 #                 moves.update( self._transverse_left( row + 1, max( row + 3, ROWS ), 1, piece.color, left ) )
 #             moves.update( self._transverseright( row + 1, max( row + 3, ROWS ), 1, piece.color, right ) )
 #
-#     return moves
+#         return moves
 #
 #     # piece moving left transversal
 #     def _transverse_left(self, start, stop, step, color, left, skipped=[])
@@ -288,24 +302,24 @@ class Board:
 #             if current == 0:
 #                 if skipped and not last:
 #                     break
-#         elif skipped:
-#         moves[(row, left)] = last + skipped
+#             elif skipped:
+#                 moves[(row, left)] = last + skipped
+#             else:
+#                 moves[(row, left)] = last
 #
-#     else:
-#     moves[(row, left)] = last
-#
-#
-# if last:
-#     if step == -1:
-#         row = max( row - 3, 0 )
-#     else:
+#             if last:
+#                 if step == -1:
+#                     row = max( row - 3, 0 )
+#                 else:
 #         row = min( row + 3, ROWS )
-# moves.update( self._traverse_left( row + step, row, step, color, left - 1, skipped=last ) )
-# moves.update( self._traverse_right( row + step, row, step, color, left + 1, skipped=last ) )
-# break
-# elif current.color == color:
-# break
-# else:
+#
+#
+#             moves.update( self._traverse_left( row + step, row, step, color, left - 1, skipped=last ) )
+#             moves.update( self._traverse_right( row + step, row, step, color, left + 1, skipped=last ) )
+#         break
+#         elif current.color == color:
+#         break
+#         else:
 # last = [current]
 # left -= 1
 # return moves
