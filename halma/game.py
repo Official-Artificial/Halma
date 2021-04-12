@@ -46,7 +46,6 @@ class Game:
             return False
 
         return True
-
     def draw_valid_moves(self, moves):
         for move in moves:
             row, col = move

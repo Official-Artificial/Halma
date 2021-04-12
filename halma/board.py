@@ -6,10 +6,12 @@ from.piece import Piece
 class Board:
     def __init__(self):
         self.board = []
+        self.player = GREEN
         self.selected_piece = None
         self.red_left = self.green_left = 10
         self.red_pieces_place = 0
         self.green_pieces_place = 0
+        self.movePieces = 0
         self.redCamp = []
         self.greenCamp = []
         self.create_board()
@@ -45,7 +47,6 @@ class Board:
                     continue
                 if (newX, newY) != (x,y):
                     moves += [(newX, newY)]
-                skip_tiles += [(x, y)]
         return moves
 
 
@@ -115,13 +116,54 @@ class Board:
                 if piece != 0:
                     piece.draw(win)
 
+    def winLoss(self):
+        # Title of the pop up window
+        # variables to see how many colors are at each others camp
+        greenAtRedCamp = 0
+        redAtGreenCamp = 0
+        counter = 0
+
+        # looks at red corner
+        # How many rows this will go through
+        for rowLength in range( 0, (COLS // 2) ):
+            # length of the row becomes shorter so that the pieces are placed in a triangle form
+            for colLength in range( 0, (ROWS // 2 - rowLength) ):
+                self.redCamp.append( (rowLength, colLength) )
+
+        for counter in range( 0, COLS // 2 + 1 ):
+            beginningRow = ((COLS // 2) * 2) - ((COLS // 2) - counter) - 1
+            beginningCol = (COLS - 1) - counter
+            for col in range( COLS - 1, beginningCol, -1 ):
+                self.greenCamp.append( (beginningRow, col) )
+
+        for coord in self.greenCamp:
+            boardPiece = self.get_piece(coord[0], coord[1])
+            # checks to make sure that the red piece is in the green corner
+            if boardPiece.color == RED:
+                redAtGreenCamp += 1
+            elif self.get_piece(coord[0], coord[1]) == GREEN:
+                # if one of the pieces is not in the green camp then red is not the winner
+                break
+
+        for coord in self.redCamp:
+            boardPiece = self.get_piece(coord[0], coord[1])
+            # check to make sure that the green piece is in the red corner
+            if boardPiece.color == GREEN:
+                greenAtRedCamp += 1
+            elif boardPiece.color == RED:
+                # if one of the pieces is not in the red camp then green is not the winner
+                break
+
+        return self.checkWin( redAtGreenCamp, greenAtRedCamp, N_PIECES_PER_PLAYER )
+
     # checking to see who has won the game
-    def checkWin(currRed, curreGreen, winAmount):
+    def checkWin(self, currRed, curreGreen, winAmount):
+        msgTitle = "Winner"
         if currRed == winAmount:
-            easygui.msgbox( 'Green Wins!', 'msgTitle' )
+            easygui.msgbox( 'Red Wins!', msgTitle )
             return True
         elif curreGreen == winAmount:
-            easygui.msgbox( 'Red Wins!', 'msgTitle' )
+            easygui.msgbox( 'Green Wins!', msgTitle )
             return True
         else:
             return False
