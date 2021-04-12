@@ -1,9 +1,9 @@
 import pygame
 
 WIDTH, HEIGHT = 800, 800
-ROWS, COLS = 8, 8
+ROWS, COLS = 10, 10
 SQUARE_SIZE = WIDTH//COLS
-N_PIECES_PER_PLAYER = 10
+N_PIECES_PER_PLAYER = 15
 # 10 x 10 = 15 pieces each
 # 16 x 16 =  19 pieces each
 # 8 x 8 =  10 pieces each
