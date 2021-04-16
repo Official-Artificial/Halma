@@ -3,6 +3,8 @@ import random
 from halma.constants import WIDTH, HEIGHT, SQUARE_SIZE, WHITE, RED, GREEN
 from halma.board import Board
 import easygui
+from minimax.algorithm import minimax
+from halma.game import Game
 
 FPS = 60
 
@@ -27,7 +29,7 @@ def main():
       easygui.msgbox( 'Green Goes First', 'Game Start' )
       board.player = GREEN
     else:
-       easygui.msgbox( 'Green Goes First', 'Game Start' )
+       easygui.msgbox( 'Red Goes First', 'Game Start' )
        board.player = RED
 
     run = True
@@ -46,6 +48,11 @@ def main():
 
     while run:
         clock.tick( FPS )
+
+        # if game.turn == GREEN:
+        #     value, new_board = minimax(game.get_board(), 3, GREEN, game)
+        #     game.ai_move(new_board)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False

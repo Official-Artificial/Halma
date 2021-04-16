@@ -23,6 +23,19 @@ class Board:
             for col in range(row % 2, COLS, 2 ):
                 pygame.draw.rect(win, BROWN, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
+    # returns some postive or negative number score of this board
+    def evalute(self):
+        return self.green_left - self.red_left
+
+    # return the pieces of a certian color
+    def get_all_pieces(self, color):
+        pieces = []
+        for row in self.board:
+            for piece in row:
+                if piece != 0 and piece.color == color:
+                    pieces.append(piece)
+        return pieces
+
     # move method
     def move(self, piece, row, col):
         # swap postions
