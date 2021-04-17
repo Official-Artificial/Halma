@@ -25,6 +25,8 @@ def get_row_col_from_mouse(pos):
 def main():
     board = Board()
     piece = None
+    totalMovesG = 0
+    totalMovesR = 0
     availMoves = []
     selectedPiece = False
     currColor = None
@@ -71,8 +73,10 @@ def main():
                         piece.color = currColor
                         selectedPiece = False
                         if board.player == GREEN:
+                            totalMovesG += 1
                             board.player = RED
                         else:
+                            totalMovesR += 1
                             board.player = GREEN
                         board.draw( WIN )
                     else:
