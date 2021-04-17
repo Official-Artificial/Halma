@@ -1,5 +1,6 @@
 from copy import deepcopy
 import pygame
+import random
 
 RED = (255, 0, 0)
 GREEN = (0, 128, 0)
@@ -62,4 +63,13 @@ def draw_moves(game, board, piece):
     game.draw_valid_moves(valid_moves.keys())
     pygame.display.update()
     #  pygame.time.delay(100)
+
+
+def simple_move(board, color):
+    all_pieces = board.get_all_pieces(color)
+    all_move_sets = {piece:board.availMoves(piece.row, piece.col, [], []) for piece in all_pieces}
+    valid_move_set = {piece:move_set for piece, move_set in all_move_sets.items() if len(move_set) != 0}
+    piece, this_move_set = random.choice(list(valid_move_set.items()))
+    row, col = random.choice(this_move_set)
+    return piece, row, col
 

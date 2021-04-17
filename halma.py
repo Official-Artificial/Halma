@@ -3,6 +3,7 @@ import random
 from halma.constants import WIDTH, HEIGHT, SQUARE_SIZE, WHITE, RED, GREEN
 from halma.board import Board
 import easygui
+from minimax.algorithm import simple_move
 from minimax.algorithm import minimax
 from halma.game import Game
 
@@ -10,6 +11,9 @@ FPS = 60
 
 WIN = pygame.display.set_mode( (WIDTH, HEIGHT) )
 pygame.display.set_caption( 'Halma' )
+
+# TODO: Get this from command line argument (sys.argv[])
+IS_PLAYER2_AI = True
 
 # user being able to move pieces by clicking
 def get_row_col_from_mouse(pos):
@@ -75,16 +79,30 @@ def main():
                         easygui.msgbox( 'Invalid Move', 'Error!' )
                         print('Invalid Move')
 
+                    ## TODO: MAKE THIS WORK
+                    if IS_PLAYER2_AI == True:
+                        piece, row, col = simple_move(board, board.player)
+                        board.move(piece, row, col )
+                        piece.color = currColor
+                        selectedPiece = False
+                        if board.player == GREEN:
+                            totalMovesG += 1
+                            board.player = RED
+                        else:
+                            totalMovesR += 1
+                            board.player = GREEN
+                        board.draw( WIN )
+
                 else:
                     print(selectedPiece)
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
                     if board.get_piece(row, col).color == board.player:
                         availMoves = []
-                        board.availMoves(row, col, availMoves, [])
-                        for i in availMoves:
-                            if board.get_piece(i[0], i[1]) != 0:
-                                availMoves.remove(i)
+                        availMoves = board.availMoves(row, col, availMoves, [])
+                        # for i in availMoves:
+                        #     if board.get_piece(i[0], i[1]) != 0:
+                        #         availMoves.remove(i)
                         piece = board.get_piece(row, col)
                         currColor = piece.color
                         piece.color = WHITE

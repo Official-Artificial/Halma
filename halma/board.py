@@ -56,10 +56,16 @@ class Board:
             for tempX in range(-1, 2):
                 newX = x + tempX
                 newY = y + tempY
-                if ((newX == x and newY == y) or newX < 0 or newY < 0 or newX >= SQUARE_SIZE or newY >= SQUARE_SIZE):
+                if ((newX == x and newY == y) or newX < 0 or newY < 0 or newX >= ROWS - 1 or newY >= COLS -1):
                     continue
                 if (newX, newY) != (x,y):
                     moves += [(newX, newY)]
+        bad_moves = []
+        for i in moves:
+             if self.get_piece(i[0], i[1]) != 0:
+                 bad_moves.append(i)
+        for move in bad_moves:
+            moves.remove(move)
         return moves
 
 
