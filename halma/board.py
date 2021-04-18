@@ -42,14 +42,6 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-    def nextMoves(self, player=1):
-        moves = []
-        for y in range(SQUARE_SIZE):
-            for x in range(SQUARE_SIZE):
-                if self.board[x][y] [1]!= player:
-                    continue
-                moves += self.availMoves(x, y, [], [])
-        return moves
 
     def availMoves(self, x, y, moves, skip_tiles):
         for tempY in range(-1, 2):
@@ -64,7 +56,10 @@ class Board:
 
 
     def get_piece(self, row, col):
-        return self.board[row][col]
+        try:
+            return self.board[row][col]
+        except:
+            print("index out of bounds")
 
     def get_n_diagonals_per_player(self):
         total_diagonals = ROWS + COLS - 1

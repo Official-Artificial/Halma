@@ -83,6 +83,8 @@ def main():
                         availMoves = []
                         board.availMoves(row, col, availMoves, [])
                         for i in availMoves:
+                            print(i[0])
+                            print(i[1])
                             if board.get_piece(i[0], i[1]) != 0:
                                 availMoves.remove(i)
                         piece = board.get_piece(row, col)
