@@ -67,9 +67,44 @@ def draw_moves(game, board, piece):
 
 def simple_move(board, color):
     all_pieces = board.get_all_pieces(color)
-    all_move_sets = {piece:board.availMoves(piece.row, piece.col, [], []) for piece in all_pieces}
+    all_move_sets = {piece: board.availMoves(piece.row, piece.col, [], []) for piece in all_pieces}
     valid_move_set = {piece:move_set for piece, move_set in all_move_sets.items() if len(move_set) != 0}
     piece, this_move_set = random.choice(list(valid_move_set.items()))
     row, col = random.choice(this_move_set)
     return piece, row, col
 
+# PSEUDO CODE !!
+def alpha_beta_search(postion, depth, alpha, beta, max_player ):
+    pass
+    '''
+   
+    // Maximizing the Player 
+    if depth  == 0 is a terminal node then 
+    return static evaluation of postion 
+    
+    if max_player:
+        max_Eval = ( -inf ) 
+        for each piece in postion do:
+            evaluate = minimax(psotion, depth - 1, alpha, beta, False) 
+            max_Eval = max( max_Eval, evaluate) 
+            alpha = max(alpha, max_Eval)
+            if beta <= alpha
+                break 
+        return max_Eval 
+    else:
+    // Minimizing the Player 
+    min_Eval = ( inf ) 
+        for each piece in postion do:
+            evaluate = minimax(psotion, depth - 1, alpha, beta, True) 
+            min_Eval = max( max_Eval, eva) 
+            beta = min(alpha, min_Eval)
+            if beta <= alpha
+                break 
+        return minEva 
+    '''
+
+
+
+
+def winningUtility(board):
+ pass

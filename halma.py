@@ -13,7 +13,7 @@ WIN = pygame.display.set_mode( (WIDTH, HEIGHT) )
 pygame.display.set_caption( 'Halma' )
 
 # TODO: Get this from command line argument (sys.argv[])
-IS_PLAYER2_AI = True
+IS_PLAYER2_AI = False
 
 # user being able to move pieces by clicking
 def get_row_col_from_mouse(pos):
