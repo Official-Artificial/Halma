@@ -79,21 +79,24 @@ def main():
                     print(selectedPiece)
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
-                    if board.get_piece(row, col).color == board.player:
-                        availMoves = []
-                        board.availMoves(row, col, availMoves, [])
-                        for i in availMoves:
-                            print(i[0])
-                            print(i[1])
-                            if board.get_piece(i[0], i[1]) != 0:
-                                availMoves.remove(i)
-                        piece = board.get_piece(row, col)
-                        currColor = piece.color
-                        piece.color = WHITE
-                        selectedPiece = True
-                    else:
-                        easygui.msgbox( 'Not your turn', 'Error!' )
-                        print('Not your turn')
+                    try:
+                        if board.get_piece(row, col).color == board.player:
+                            availMoves = []
+                            board.availMoves(row, col, availMoves, [])
+                            for i in availMoves:
+                                print(i[0])
+                                print(i[1])
+                                if board.get_piece(i[0], i[1]) != 0:
+                                    availMoves.remove(i)
+                            piece = board.get_piece(row, col)
+                            currColor = piece.color
+                            piece.color = WHITE
+                            selectedPiece = True
+                        else:
+                            easygui.msgbox( 'Not your turn', 'Error!' )
+                            print('Not your turn')
+                    except:
+                        print("Not a vaild piece")
 
         board.draw( WIN )
         pygame.display.update()
