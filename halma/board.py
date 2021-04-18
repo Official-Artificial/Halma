@@ -6,6 +6,7 @@ from.piece import Piece
 class Board:
     def __init__(self):
         self.board = []
+        self.moves = []
         self.player = GREEN
         self.selected_piece = None
         self.red_left = self.green_left = 10
@@ -22,6 +23,11 @@ class Board:
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2 ):
                 pygame.draw.rect(win, BROWN, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+    def drawV(self,win,moves):
+        for move in moves:
+            row, col = move
+            pygame.draw.circle(win, GREY,(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15 )
 
     # returns some postive or negative number score of this board
     def evalute(self):
@@ -42,6 +48,14 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
+    def nextMoves(self, player=1):
+        moves = []
+        for y in range(SQUARE_SIZE):
+            for x in range(SQUARE_SIZE):
+                if self.board[x][y] [1]!= player:
+                    continue
+                moves += self.availMoves(x, y, [], [])
+        return moves
 
     def availMoves(self, x, y, moves, skip_tiles):
         for tempY in range(-1, 2):
@@ -58,14 +72,15 @@ class Board:
                  bad_moves.append(i)
         for move in bad_moves:
             moves.remove(move)
+        self.moves = []
+        self.moves = moves
         return moves
-
 
     def get_piece(self, row, col):
         try:
             return self.board[row][col]
         except:
-            print("index out of bounds")
+            print( "index out of bounds" )
 
     def get_n_diagonals_per_player(self):
         total_diagonals = ROWS + COLS - 1
@@ -124,6 +139,7 @@ class Board:
     # drawing all the pieces in the squares ( win = window )
     def draw(self, win):
         self.draw_squares(win)
+        self.drawV( win, self.moves )
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]
